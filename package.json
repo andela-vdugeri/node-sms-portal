@@ -1,0 +1,29 @@
+{
+  "name": "node-sms-portal",
+  "version": "1.0.0",
+  "description": "sms portal with nodejs",
+  "main": "server.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/Danvery/smsportal.git"
+  },
+  "keywords": [
+    "sms",
+    "porta",
+    "bulk",
+    "sms",
+    "scheduled",
+    "sms",
+    "organisational",
+    "sms"
+  ],
+  "author": "Verem Dugeri",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/Danvery/smsportal#readme"
+}
