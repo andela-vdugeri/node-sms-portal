@@ -28,9 +28,10 @@ gulp.task('db:sync', function () {
 });
 
 gulp.task('server:test', ['db:sync', 'coverage-setup'], function () {
+  process.env.NODE_ENV = 'test';
   return gulp.src(paths.serverTest)
-    .pipe(mocha)
-    .pip(istanbul.writeReports({
+    .pipe(mocha())
+    .pipe(istanbul.writeReports({
       dir: './test/coverage'
     }));
 });
