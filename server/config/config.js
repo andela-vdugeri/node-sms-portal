@@ -2,7 +2,7 @@
 
 var development = {
   database: {
-    url: 'postgres://postgress:password@localhost:5432/sms_portal',
+    url: 'postgres://postgres:password@localhost:5432/sms_portal',
     port: '5432',
     host: 'localhost'
   }
