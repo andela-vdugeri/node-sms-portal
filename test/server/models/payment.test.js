@@ -59,4 +59,50 @@ describe('Payment model', function () {
       done();
     });
   });
+
+  it('should find a payment record', function (done) {
+    models.Payment.create(mockPayment).then(function (payment) {
+      models.Payment.findOne({
+        where: {
+          id: payment.id
+        }
+      }).then(function (_payment) {
+        _payment.amount.should.equal(mockPayment.amount);
+        _payment.username.should.equal(mockPayment.username);
+        _payment.status.should.equal(mockPayment.status);
+        _payment.user_id.should.equal(mockPayment.user_id);
+        done();
+      });
+    });
+  });
+
+  it('should update a payment record', function (done) {
+    models.Payment.create(mockPayment).then(function (payment) {
+      payment.amount = 5000;
+      payment.save().then(function (_payment) {
+        _payment.amount.should.not.equal(mockPayment.amount);
+        _payment.amount.should.equal(5000);
+        done();
+      });
+    });
+  });
+
+  it('should delete a payment record', function (done) {
+    models.Payment.create(mockPayment).then(function (payment) {
+      models.Payment.destroy({
+        where: {
+          id: payment.id
+        }
+      }).then(function () {
+        models.Payment.findOne({
+          where: {
+            id: payment.id
+          }
+        }).then(function (_payment) {
+          should.not.exist(_payment);
+          done();
+        });
+      });
+    });
+  });
 });
