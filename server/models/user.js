@@ -1,5 +1,7 @@
 'use strict';
 
+var bcrypt = require('bcrypt');
+
 module.exports = function (sequelize, DataTypes) {
   var User = sequelize.define('User', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
@@ -18,14 +20,24 @@ module.exports = function (sequelize, DataTypes) {
         return value;
       }
     },
-     classMethods: {
-       associate: function (models) {
-         User.hasMany(models.Role);
-         User.hasMany(models.Payment);
-         User.hasMany(models.Transaction);
-         User.hasMany(models.ScheduledSms);
-       }
+   classMethods: {
+     associate: function (models) {
+       User.hasMany(models.Role);
+       User.hasMany(models.Payment);
+       User.hasMany(models.Transaction);
+       User.hasMany(models.ScheduledSms);
      }
+   }
+  });
+
+  User.beforeCreate(function (user, options, next) {
+    bcrypt.hash(user.password, 10, function (err, hash) {
+      if (err) {
+        return next(err);
+      }
+      user.password = hash;
+      next();
+    });
   });
 
   return User;

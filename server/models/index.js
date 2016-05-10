@@ -7,6 +7,7 @@ var fs = require('fs'),
   env = process.env.NODE_ENV || 'development',
   config = require('../config/config')[env],
   db = {},
+  bcrypt = require('bcrypt'),
   sequelize;
 
 var options = {
@@ -40,5 +41,6 @@ fs
 
   module.exports = lodash.extend({
     sequelize: sequelize,
-    Sequelize: Sequelize
+    Sequelize: Sequelize,
+    bcrypt: bcrypt
   }, db);
