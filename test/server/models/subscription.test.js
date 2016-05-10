@@ -91,13 +91,13 @@ describe('Subscription model', function () {
         where: {
           id: sub.id
         }
-      }).then(function (_sub) {
+      }).then(function () {
         models.Subscription.findOne({
           where: {
-            id: _sub.id
+            id: sub.id
           }
-        }).then(function (foundSub) {
-          should.not.exist(foundSub);
+        }).then(function (_sub) {
+          should.not.exist(_sub);
           done();
         });
       });

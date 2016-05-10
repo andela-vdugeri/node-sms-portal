@@ -70,13 +70,13 @@ describe('Role model', function () {
         where: {
           id: role.id
         }
-      }).then(function (_role) {
+      }).then(function () {
         models.Role.findOne({
           where: {
             id: role.id
           }
-        }).then(function (foundRole) {
-          should.not.exist(foundRole);
+        }).then(function (_role) {
+          should.not.exist(_role);
           done();
         });
       });

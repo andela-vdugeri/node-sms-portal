@@ -27,13 +27,14 @@
   "license": "ISC",
   "homepage": "https://bitbucket.org/Danvery/smsportal#readme",
   "dependencies": {
-    "express": "^4.13.4",
     "async": "1.5.0",
+    "bcrypt": "^0.8.6",
     "body-parser": "^1.15.0",
     "bugsnag": "^1.7.0",
     "cookie-parser": "^1.4.1",
     "eslint": "^2.8.0",
     "eslint-config-airbnb": "3.1.0",
+    "express": "^4.13.4",
     "fs": "0.0.2",
     "gulp": "^3.9.1",
     "gulp-exit": "0.0.2",
@@ -62,7 +63,6 @@
     "gulp-mocha": "2.0.0",
     "node-mocks-http": "^1.5.2",
     "q": "^1.4.1",
-    "should": "^8.3.1",
     "should": "^8.3.1"
   }
 }

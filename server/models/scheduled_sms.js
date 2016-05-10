@@ -19,7 +19,7 @@ module.exports = function (sequelize, DataTypes) {
     },
     classMethods: {
       associate: function (models) {
-        ScheduledSms.belongsTo(models.User, {foreignKey: 'user_id'});
+        ScheduledSms.belongsTo(models.User, { foreignKey: 'user_id' });
       }
     }
   });
