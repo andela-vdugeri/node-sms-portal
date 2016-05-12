@@ -1,8 +1,7 @@
 'use strict';
 
-var env = process.env.NODE_ENV | 'development',
-  config = require('./server/config/config')[env],
-  cookieParser = require('cookie-parser'),
+
+var cookieParser = require('cookie-parser'),
   express = require('express'),
   bodyParser = require('body-parser'),
   models = require('./server/models'),

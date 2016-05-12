@@ -17,6 +17,7 @@ module.exports = function (sequelize, DataTypes) {
         var value = this.get();
         delete value.created_at;
         delete value.updated_at;
+        delete value.password;
         return value;
       }
     },

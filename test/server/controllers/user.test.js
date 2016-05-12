@@ -408,4 +408,43 @@ describe('User controller', function () {
       });
     });
   });
+
+  describe('#login', function () {
+    var username, password;
+    beforeEach(function (done) {
+      models.User.destroy({ where: {} }).then(function () {
+        models.User.create(mockUsers[2]).then(function (user) {
+          username = user.username;
+          password = mockUsers[2].password;
+          done();
+        });
+      });
+    });
+
+    afterEach(function (done) {
+      models.User.destroy({ where: {} }).then(function () {
+        done();
+      });
+    });
+
+    describe('No Errors', function () {
+      it('should validate a user', function (done) {
+        var req = httpMocks.createRequest({
+          body: {
+            username: username,
+            password: password
+          }
+        });
+        userController.login(req, res);
+        res.on('end', function () {
+          var data = JSON.parse(res._getData());
+          should.exist(data);
+          data.user.username.should.equal(mockUsers[2].username);
+          should.exist(data.token);
+          should.exist(data.expires);
+          done();
+        });
+      });
+    });
+  });
 });
