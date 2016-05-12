@@ -11,11 +11,11 @@ var _ = require('lodash'),
 
 
 var generateToken = function (user, cb) {
-  var expires = moment().add('days', 7).valueOf();
+  var expires = moment().add(7, 'days').valueOf();
   var token = jwt.encode({
     iss: user.id,
     exp: expires
-  }, config.tokenSecret);
+  }, config.token.secret);
 
   cb(null, token, expires);
 };
@@ -116,20 +116,19 @@ module.exports = {
       }
     }).then(function (user) {
       if (!user) {
-        res.status(404).json({ message: 'Wrong username or password' })
+        res.status(404).json({ message: 'Wrong username or password' });
       }
       bcrypt.compare(password, user.password, function (err, _res) {
         if (err) {
           logger.error(err.message);
           res.status(500).json(err);
         }
-
         generateToken(user, function (_err, token, expires) {
           if (_err) {
             logger.error(_err.message);
             res.status(500).json(_err);
           }
-          res.status(200).json({ user: user, token: token, expires: expires });
+          res.status(200).json({ user: user.toJson(), token: token, expires: expires });
         });
       });
     }).catch(function (err) {
