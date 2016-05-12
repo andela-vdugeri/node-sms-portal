@@ -93,13 +93,13 @@ describe('Tranasction model', function () {
         where: {
           id: trans.id
         }
-      }).then(function (_trans) {
+      }).then(function () {
         models.Transaction.findOne({
           where: {
-            id: _trans.id
+            id: trans.id
           }
-        }).then(function (foundTrans) {
-          should.not.exist(foundTrans);
+        }).then(function (_trans) {
+          should.not.exist(_trans);
           done();
         });
       });

@@ -1,8 +1,7 @@
 'use strict';
 
-var env = process.env.NODE_ENV | 'development',
-  config = require('./server/config/config'),
-  cookieParser = require('cookie-parser'),
+
+var cookieParser = require('cookie-parser'),
   express = require('express'),
   bodyParser = require('body-parser'),
   models = require('./server/models'),
@@ -19,8 +18,9 @@ app.use(bodyParser.urlencoded({
 
 
 models.sequelize.sync().then(function () {
+  // load server routes
   controllers(app);
-
+  // fire up the server
   app.listen(app.get('port'), function () {
     console.log('>> magic happens on port ' + app.get('port'));
   });

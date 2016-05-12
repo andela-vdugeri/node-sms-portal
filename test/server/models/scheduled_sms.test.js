@@ -94,13 +94,13 @@ describe('SchdeduledSms model', function () {
         where: {
           id: schedule.id
         }
-      }).then(function (_schedule) {
+      }).then(function () {
         models.ScheduledSms.findOne({
           where: {
-            id: _schedule.id
+            id: schedule.id
           }
-        }).then(function (foundSchedule) {
-          should.not.exist(foundSchedule);
+        }).then(function (_schedule) {
+          should.not.exist(_schedule);
           done();
         });
       });

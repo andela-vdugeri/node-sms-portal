@@ -30,7 +30,6 @@ describe('User model', function () {
     models.User.create(mockUser).then(function (user) {
       should.exist(user);
       user.username.should.equal(mockUser.username);
-      user.password.should.equal(mockUser.password);
       user.firstName.should.equal(mockUser.firstName);
       done();
     });
@@ -65,7 +64,6 @@ describe('User model', function () {
       }).then (function (_user) {
         should.exist(_user);
         _user.username.should.equal(mockUser.username);
-        _user.password.should.equal(mockUser.password);
         _user.lastName.should.equal(mockUser.lastName);
         done();
       });
@@ -78,13 +76,13 @@ describe('User model', function () {
         where: {
           id: user.id
         }
-      }).then(function (_user) {
+      }).then(function () {
         models.User.findOne({
           where: {
-            id: _user.id
+            id: user.id
           }
-        }).then(function (foundUser) {
-          should.not.exist(foundUser);
+        }).then(function (_user) {
+          should.not.exist(_user);
           done();
         });
       });
