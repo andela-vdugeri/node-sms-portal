@@ -227,6 +227,104 @@ describe('User controller', function () {
     });
   });
 
+  describe('#edit', function () {
+    var id;
+
+    beforeEach(function (done) {
+      models.User.destroy({ where: {} }).then(function () {
+        models.User.create(mockUsers[1]).then(function (_user) {
+          id = _user.id;
+          done();
+        });
+      });
+    });
+
+    afterEach(function (done) {
+      models.User.destroy({ where: {} }).then(function () {
+        done();
+      });
+    });
+
+    describe('No Errors', function () {
+      var user = {
+        email: 'updatedemail@example.com',
+        firstName: 'UpdatedFirstName',
+        lastName: 'UpdatedLastName',
+        username: 'UpdatedUsername'
+      };
+
+      it('should find and edit a user', function (done) {
+        var req = httpMocks.createRequest({
+          params: {
+            id: id
+          },
+          body: {
+            user: user
+          }
+        });
+
+        userController.edit(req, res);
+        res.on('end', function () {
+          var data = JSON.parse(res._getData());
+          res.statusCode.should.equal(200);
+          should.exist(data);
+          data.username.should.equal(user.username);
+          data.firstName.should.equal(user.firstName);
+          done();
+        });
+      });
+
+      it('should respond with a 404 status code', function (done) {
+        var req = httpMocks.createRequest({
+          params: {
+            id: 2121312
+          }
+        });
+
+        userController.edit(req, res);
+        res.on('end', function () {
+          var data = JSON.parse(res._getData());
+          res.statusCode.should.equal(404);
+          data.message.should.equal('User not found');
+          done();
+        });
+      });
+    });
+
+    describe('Errors', function () {
+      var error = { message: 'An error occured' },
+        promise = models.User.findById;
+
+      before(function () {
+        var deferred = Q.defer();
+        models.User.findById = function () {
+          return deferred.promise;
+        }
+        deferred.reject(error);
+      });
+
+      after(function () {
+        models.User.findById = promise;
+      });
+
+      it ('should respond with status code 500', function (done) {
+        var req = httpMocks.createRequest({
+          params: {
+            id: id
+          }
+        });
+
+        userController.edit(req, res);
+        res.on('end', function () {
+          var data = JSON.parse(res._getData());
+          res.statusCode.should.equal(500);
+          data.message.should.equal(error.message);
+          done();
+        });
+      });
+    });
+  });
+
   describe('#delete', function () {
     var id;
     beforeEach(function (done) {
