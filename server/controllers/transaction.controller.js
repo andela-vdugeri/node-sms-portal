@@ -61,7 +61,7 @@ module.exports = {
   },
 
   delete: function (req, res) {
-    models.Transaction.findById(req.param.id).then(function (trans) {
+    models.Transaction.findById(req.params.id).then(function (trans) {
       if (trans) {
         trans.destroy().then(function () {
           res.status(200).json({ message: 'Transaction record deleted' });

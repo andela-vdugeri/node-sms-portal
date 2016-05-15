@@ -45,7 +45,7 @@ describe('Payment model', function () {
   it('should create a payment record', function (done) {
     models.Payment.create(mockPayment).then(function (payment) {
       should.exist(payment);
-      payment.amount.should.equal(mockPayment.amount);
+      Number(payment.amount).should.equal(mockPayment.amount);
       payment.username.should.equal(mockPayment.username);
       done();
     });
@@ -67,7 +67,7 @@ describe('Payment model', function () {
           id: payment.id
         }
       }).then(function (_payment) {
-        _payment.amount.should.equal(mockPayment.amount);
+        Number(_payment.amount).should.equal(mockPayment.amount);
         _payment.username.should.equal(mockPayment.username);
         _payment.status.should.equal(mockPayment.status);
         _payment.user_id.should.equal(mockPayment.user_id);
@@ -80,7 +80,7 @@ describe('Payment model', function () {
     models.Payment.create(mockPayment).then(function (payment) {
       payment.amount = 5000;
       payment.save().then(function (_payment) {
-        _payment.amount.should.not.equal(mockPayment.amount);
+        Number(_payment.amount).should.not.equal(mockPayment.amount);
         _payment.amount.should.equal(5000);
         done();
       });

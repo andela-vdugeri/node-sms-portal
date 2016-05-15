@@ -8,6 +8,24 @@ var development = {
   },
   token: {
     secret: 'someRandomString'
+  },
+
+  infobip: {
+    sms: {
+      endPoint: '/sms/1/text/single'
+    },
+    host: 'https://api.infobip.com',
+    username: 'danverem',
+    password: 'leo72561899'
+  },
+  nexmo: {
+    HOST: 'https://rest.nexmo.com',
+    API_KEY: '0943f9c8',
+    API_SECRET: 'b93ad7e137be87a3',
+    PORT: 443,
+    sms: {
+      endPoint: '/sms/json'
+    }
   }
 };
 
@@ -19,6 +37,14 @@ var production = {
   },
   token: {
     secret: 'someRandomString'
+  },
+  sms: {
+    endPoint: '/sms/1/text/single'
+  },
+  infobip: {
+    host: 'api.infobip.com',
+    username: 'arize',
+    password: 'Pass04'
   }
 };
 
@@ -30,6 +56,14 @@ var test = {
   },
   token: {
     secret: 'someRandomString'
+  },
+  sms: {
+    endPoint: '/sms/1/text/single'
+  },
+  infobip: {
+    host: 'api.infobip.com',
+    username: 'arize',
+    password: 'Pass04'
   }
 };
 

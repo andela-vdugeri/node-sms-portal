@@ -26,7 +26,7 @@ describe('Pricing model', function () {
   it('should create a pricing policy in the database', function (done) {
     models.Pricing.create(pricing).then(function (price) {
       should.exist(price);
-      price.unitPrice.should.equal(pricing.unitPrice);
+      Number(price.unitPrice).should.equal(pricing.unitPrice);
       done();
     });
   });
@@ -48,7 +48,7 @@ describe('Pricing model', function () {
         }
       }).then(function (_price) {
         should.exist(_price);
-        _price.unitPrice.should.equal(pricing.unitPrice);
+        Number(_price.unitPrice).should.equal(pricing.unitPrice);
         _price.id.should.equal(price.id);
         done();
       });
@@ -59,7 +59,7 @@ describe('Pricing model', function () {
     models.Pricing.create(pricing).then(function (price) {
       price.unitPrice = 2.0;
       price.save().then(function (_price) {
-        _price.unitPrice.should.equal(2.0);
+        Number(_price.unitPrice).should.equal(2.0);
         done();
       });
     });
