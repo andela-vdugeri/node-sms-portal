@@ -1,10 +1,14 @@
 'use strict';
 
 var models = require('../models'),
-  logger = require('winston');
+  logger = require('winston'),
+  env = process.env.NODE_ENV || 'development',
+  needle = require('needle'),
+  request = require('request'),
+  config = require('../config/config')[env];
 
 
-
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
 module.exports = {
   index: function (req, res) {
     models.Message.findAll().then(function (messages) {
@@ -73,5 +77,41 @@ module.exports = {
       logger.error(err.message);
       res.status(500).json(err);
     });
+  },
+
+  send: function (req, res) {
+    var data = req.body,
+      url = config.infobip.host + config.infobip.sms.endPoint,
+      //options = {
+        headers = {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+          Host: config.infobip.host,
+          Authorization: 'Basic ' + new Buffer(config.infobip.username + ':' + config.infobip.password).toString('base64'),
+          'Content-Length': Buffer.byteLength(data)
+        };
+      //};
+
+    // needle.post(url, {}, options, function (err, _res, body) {
+    //   if (err) {
+    //     logger.error(err.message);
+    //     res.status(500).json(err);
+    //   } else {
+    //     if (_res.statusCode !== 200) {
+    //       res.status(_res.statusCode).json(body);
+    //     } else {
+    //       res.status(200).json(body);
+    //     }
+    //   }
+    // })
+    request.post({ url: url, headers: headers, body: JSON.stringify(data) }, function (err, _res, body) {
+      if (err) {
+        logger.error(err.message);
+        res.status(500).json(err);
+      } else {
+        res.status(_res.statusCode).json(_res);
+      }
+    });
   }
+
 };

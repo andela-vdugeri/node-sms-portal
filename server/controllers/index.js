@@ -3,6 +3,7 @@
 // load controllers
 var userController = require('./user.controller'),
   messageController = require('./message.controller'),
+  transactionController = require('./transaction.controller'),
   acl = require('../middlewares/authorization');
 
 module.exports = function (app) {
@@ -20,5 +21,13 @@ module.exports = function (app) {
   app.post('/api/v1/messages', messageController.new);
   app.get('/api/v1/messages/:id', messageController.show);
   app.put('/api/v1/messages/:id', messageController.edit);
+  app.post('/api/v1/messages/send', messageController.send);
   app.delete('/api/v1/messages/:id', messageController.delete);
+
+  // transaction routes
+  app.get('/api/v1/transactions', transactionController.index);
+  app.post('/api/v1/transactions', transactionController.new);
+  app.put('/api/v1/transactions/:id', transactionController.edit);
+  app.get('/api/v1/transactions/:id', transactionController.show);
+  app.delete('/api/v1/transactions/:id', transactionController.delete);
 };
