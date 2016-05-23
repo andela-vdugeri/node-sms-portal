@@ -14,9 +14,6 @@ module.exports = {
     }).catch(function (err) {
       logger.error(err.message);
       res.status(500).json(err);
-    }).catch(function (err) {
-      logger.error(err.message);
-      res.status(500).json(err.message);
     });
   },
 
@@ -30,7 +27,7 @@ module.exports = {
     });
   },
 
-  find: function (req, res) {
+  show: function (req, res) {
     models.Subscription.findById(req.params.id).then(function (sub) {
       res.status(200).json(sub);
     }).catch(function (err) {
@@ -40,7 +37,7 @@ module.exports = {
   },
 
   edit: function (req, res) {
-    models.Subscription.findById(req.param.id).then(function (subscription) {
+    models.Subscription.findById(req.params.id).then(function (subscription) {
       if (subscription) {
         subscription.messageUnits = req.body.messageUnits;
         subscription.user_id = req.body.user_id;
@@ -51,7 +48,7 @@ module.exports = {
           res.status(500).json(err);
         });
       } else {
-        res.status(400).json({ message: 'Subscription data not found' });
+        res.status(404).json({ message: 'Subscription data not found' });
       }
     }).catch(function (err) {
       logger.error(err.message);
@@ -69,7 +66,7 @@ module.exports = {
           res.status(500).json(err);
         });
       } else {
-        res.status(404).json({ message: 'Subscription data message' });
+        res.status(404).json({ message: 'Subscription data does not exist' });
       }
     }).catch(function (err) {
       logger.error(err.message);
