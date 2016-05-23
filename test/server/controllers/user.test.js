@@ -4,7 +4,7 @@ var Q = require('q'),
   models = require('../../../server/models'),
   should = require('should'),
   httpMocks = require('node-mocks-http'),
-  userController = require('../../../server/controllers/user.controller');
+  userController = require('../../../server/controllers/user');
 
 
 describe('User controller', function () {
