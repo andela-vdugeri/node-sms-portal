@@ -33,7 +33,6 @@ module.exports = {
         res.status(404).json({ message: 'Transaction record not found' });
       }
     }).catch(function (err) {
-      console.log(err.message);
       logger.error(err.message);
       res.status(500).json(err);
     });

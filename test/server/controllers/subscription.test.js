@@ -9,10 +9,7 @@ var httpMocks = require('node-mocks-http'),
   res, req,
   mockUser, mockSubscription;
 
-
-
 describe('Subscription controller', function () {
-
   mockSubscription = {
     messageUnits: 22
   };
@@ -44,7 +41,7 @@ describe('Subscription controller', function () {
 
   describe('#index', function () {
     beforeEach(function (done) {
-      models.Subscription.create(mockSubscription).then(function (subscription) {
+      models.Subscription.create(mockSubscription).then(function () {
         done();
       });
     });
@@ -88,7 +85,7 @@ describe('Subscription controller', function () {
         done();
       });
 
-      it ('should return status code 500', function (done) {
+      it('should return status code 500', function (done) {
         req = httpMocks.createRequest();
         subscriptionController.index(req, res);
         res.on('end', function () {
@@ -137,7 +134,7 @@ describe('Subscription controller', function () {
         done();
       });
 
-      it ('should return a 500 status code', function(done) {
+      it('should return a 500 status code', function(done) {
         req = httpMocks.createRequest({
           body: mockSubscription
         });
@@ -193,7 +190,7 @@ describe('Subscription controller', function () {
         var deferred = Q.defer();
         models.Subscription.findById = function () {
           return deferred.promise;
-        }
+        };
         deferred.reject(error);
         done();
       });
@@ -203,7 +200,7 @@ describe('Subscription controller', function () {
         done();
       });
       it('should return status code 500 ', function (done) {
-        var req = httpMocks.createRequest({
+        req = httpMocks.createRequest({
           params: {
             id: id
           }
@@ -220,7 +217,6 @@ describe('Subscription controller', function () {
   });
 
   describe('#edit', function () {
-
     var updatedSubscription = { messageUnits: 44 },
       subId;
 
@@ -235,7 +231,7 @@ describe('Subscription controller', function () {
     afterEach(function (done) {
       models.Subscription.destroy({ where: {} }).then(function () {
         done();
-      })
+      });
     });
 
     describe('No Errors', function () {
@@ -269,8 +265,8 @@ describe('Subscription controller', function () {
           res.statusCode.should.equal(404);
           data.message.should.equal('Subscription data not found');
           done();
-        })
-      })
+        });
+      });
     });
 
     describe('Errors', function () {
@@ -301,7 +297,7 @@ describe('Subscription controller', function () {
             done();
           });
         });
-      })
+      });
 
       describe('Update fails', function () {
         var promise = models.Subscription.Instance.prototype.save;
@@ -309,7 +305,7 @@ describe('Subscription controller', function () {
           var deferred = Q.defer();
           models.Subscription.Instance.prototype.save = function () {
             return deferred.promise;
-          }
+          };
           deferred.reject(error);
           done();
         });
@@ -391,7 +387,7 @@ describe('Subscription controller', function () {
           var deferred = Q.defer();
           models.Subscription.findById = function () {
             return deferred.promise;
-          }
+          };
           deferred.reject(error);
           done();
         });
@@ -401,10 +397,10 @@ describe('Subscription controller', function () {
           done();
         });
 
-        it('should return a 500 status code', function () {
+        it('should return a 500 status code', function (done) {
           req = httpMocks.createRequest({
             params: {
-              id: 1
+              id: 2323232
             }
           });
 
@@ -416,8 +412,8 @@ describe('Subscription controller', function () {
             done();
           });
         });
-      })
-      describe('destroy fails', function () {
+      });
+      describe('Destroy fails', function () {
         var promise = models.Subscription.Instance.prototype.destroy;
         beforeEach(function (done) {
           var deferred = Q.defer();
@@ -442,6 +438,7 @@ describe('Subscription controller', function () {
           res.on('end', function () {
             var data = JSON.parse(res._getData());
             res.statusCode.should.equal(500);
+            data.message.should.equal(error.message);
             done();
           });
         });

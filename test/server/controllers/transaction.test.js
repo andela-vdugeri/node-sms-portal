@@ -51,13 +51,13 @@ describe('Transaction controller', function () {
 
   describe('#index', function () {
     beforeEach(function (done) {
-      models.Transaction.create(mockTransaction).then(function (trans) {
+      models.Transaction.create(mockTransaction).then(function () {
         done();
       });
     });
 
     describe('No Errors', function () {
-      it ('should fetch all transaction records', function (done) {
+      it('should fetch all transaction records', function (done) {
         var req = httpMocks.createRequest();
         transactionController.index(req, res);
 
@@ -66,8 +66,8 @@ describe('Transaction controller', function () {
           should.exist(data);
           data.length.should.equal(1);
           done();
-        })
-      })
+        });
+      });
     });
 
     describe('Errors', function () {
@@ -225,7 +225,7 @@ describe('Transaction controller', function () {
         transactionController.show(req, res);
         res.on('end', function () {
           var data = JSON.parse(res._getData());
-          //res.statusCode.should.eqaual(500);
+          // res.statusCode.should.eqaual(500);
           data.message.should.equal(error.message);
           done();
         });

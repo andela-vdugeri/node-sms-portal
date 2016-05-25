@@ -2,11 +2,11 @@
 
 module.exports = function (sequelize, DataTypes) {
   var ScheduledSms = sequelize.define('ScheduledSms', {
-    id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true},
-    message: { type: DataTypes.TEXT},
-    sendTime: { type: DataTypes.DATE},
-    receivers: { type: DataTypes.ARRAY(DataTypes.STRING)},
-    sent: { type: DataTypes.BOOLEAN, defaultValue: false}
+    id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
+    message: { type: DataTypes.TEXT },
+    sendTime: { type: DataTypes.DATE },
+    receivers: { type: DataTypes.ARRAY(DataTypes.STRING) },
+    sent: { type: DataTypes.BOOLEAN, defaultValue: false }
   }, {
     underscored: true,
     instanceMethods: {
@@ -25,4 +25,4 @@ module.exports = function (sequelize, DataTypes) {
   });
 
   return ScheduledSms;
-}
+};
