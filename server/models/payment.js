@@ -2,11 +2,11 @@
 
 module.exports = function (sequelize, DataTypes) {
   var Payment = sequelize.define('Payment', {
-    id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true, unique: true},
-    amount: { type: DataTypes.DECIMAL, unsigned: true},
-    description: { type: DataTypes.TEXT},
-    username: { type: DataTypes.STRING},
-    status: { type: DataTypes.BOOLEAN}
+    id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true, unique: true },
+    amount: { type: DataTypes.DECIMAL, unsigned: true },
+    description: { type: DataTypes.TEXT },
+    username: { type: DataTypes.STRING },
+    status: { type: DataTypes.BOOLEAN, default: false }
   }, {
     underscored: true,
     instanceMethods: {
@@ -19,7 +19,7 @@ module.exports = function (sequelize, DataTypes) {
     },
     classMethods: {
       associate: function (models) {
-        Payment.belongsTo(models.User, {foreignKey: 'user_id'});
+        Payment.belongsTo(models.User, { foreignKey: 'user_id' });
       }
     }
   });
