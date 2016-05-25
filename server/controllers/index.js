@@ -4,6 +4,7 @@
 var userController = require('./user'),
   messageController = require('./message'),
   scheduleController = require('./schedule'),
+  paymentController = require('./payment'),
   transactionController = require('./transaction'),
   acl = require('../middlewares/authorization');
 
@@ -37,4 +38,10 @@ module.exports = function (app) {
   app.put('/api/v1/schedules/:id', scheduleController.edit);
   app.get('/api/v1/schedules/:id', scheduleController.show);
   app.delete('/api/v1/schedules/:id', scheduleController.delete);
+
+  app.get('/api/v1/payments', paymentController.index);
+  app.post('/api/v1/payments', paymentController.new);
+  app.put('/api/v1/payments/:id', paymentController.edit);
+  app.get('/api/v1/payments/:id', paymentController.show);
+  app.delete('/api/v1/payments/:id', paymentController.delete);
 };
