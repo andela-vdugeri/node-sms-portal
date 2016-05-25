@@ -1,9 +1,10 @@
 'use strict';
 
 // load controllers
-var userController = require('./user.controller'),
-  messageController = require('./message.controller'),
-  transactionController = require('./transaction.controller'),
+var userController = require('./user'),
+  messageController = require('./message'),
+  scheduleController = require('./schedule'),
+  transactionController = require('./transaction'),
   acl = require('../middlewares/authorization');
 
 module.exports = function (app) {
@@ -30,4 +31,10 @@ module.exports = function (app) {
   app.put('/api/v1/transactions/:id', transactionController.edit);
   app.get('/api/v1/transactions/:id', transactionController.show);
   app.delete('/api/v1/transactions/:id', transactionController.delete);
+
+  app.get('/api/v1/schedules', scheduleController.index);
+  app.post('/api/v1/schedules', scheduleController.new);
+  app.put('/api/v1/schedules/:id', scheduleController.edit);
+  app.get('/api/v1/schedules/:id', scheduleController.show);
+  app.delete('/api/v1/schedules/:id', scheduleController.delete);
 };

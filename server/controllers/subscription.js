@@ -70,7 +70,7 @@ module.exports = {
       }
     }).catch(function (err) {
       logger.error(err.message);
-      res.status(500).json(err.message);
+      res.status(500).json(err);
     });
   }
 };
