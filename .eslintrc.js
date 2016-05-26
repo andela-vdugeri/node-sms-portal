@@ -12,6 +12,7 @@ module.exports = {
     "before"     : false,
     "beforeEach" : false,
     "after"      : false,
-    "afterEach"  : false
+    "afterEach"  : false,
+    "angular"   : false
   }
 };

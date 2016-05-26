@@ -82,34 +82,27 @@ module.exports = {
   send: function (req, res) {
     var data = req.body,
       url = config.infobip.host + config.infobip.sms.endPoint,
-      //options = {
-        headers = {
+      options = {
+        headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json',
           Host: config.infobip.host,
-          Authorization: 'Basic ' + new Buffer(config.infobip.username + ':' + config.infobip.password).toString('base64'),
+          Authorization: 'Basic ' + new Buffer(config.infobip.username +
+            ':' + config.infobip.password).toString('base64'),
           'Content-Length': Buffer.byteLength(data)
-        };
-      //};
+        }
+      };
 
-    // needle.post(url, {}, options, function (err, _res, body) {
-    //   if (err) {
-    //     logger.error(err.message);
-    //     res.status(500).json(err);
-    //   } else {
-    //     if (_res.statusCode !== 200) {
-    //       res.status(_res.statusCode).json(body);
-    //     } else {
-    //       res.status(200).json(body);
-    //     }
-    //   }
-    // })
-    request.post({ url: url, headers: headers, body: JSON.stringify(data) }, function (err, _res, body) {
+    needle.post(url, {}, options, function (err, _res, body) {
       if (err) {
         logger.error(err.message);
         res.status(500).json(err);
       } else {
-        res.status(_res.statusCode).json(_res);
+        if (_res.statusCode !== 200) {
+          res.status(_res.statusCode).json(body);
+        } else {
+          res.status(200).json(body);
+        }
       }
     });
   }

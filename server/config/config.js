@@ -10,6 +10,10 @@ var development = {
     secret: 'someRandomString'
   },
 
+  auth: {
+    authUrl: '/api/v1/auth/login'
+  },
+
   infobip: {
     sms: {
       endPoint: '/sms/1/text/single'
@@ -45,6 +49,9 @@ var production = {
     host: 'api.infobip.com',
     username: 'arize',
     password: 'Pass04'
+  },
+  auth: {
+    authUrl: process.env.AUTH_URL
   }
 };
 
@@ -64,6 +71,9 @@ var test = {
     host: 'api.infobip.com',
     username: 'arize',
     password: 'Pass04'
+  },
+  auth: {
+    authUrl: process.env.AUTH_URL
   }
 };
 
