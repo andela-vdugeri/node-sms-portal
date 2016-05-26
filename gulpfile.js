@@ -107,7 +107,7 @@ gulp.task('bower', function () {
 });
 
 gulp.task('nodemon', function () {
-  nodemon({ script: 'server.js', ext: 'js', ignore: ['./node_modules/**'] })
+  nodemon({ script: 'server.js', ext: 'js', ignore: ['public/**', 'app/**', 'node_modules/**'] })
     .on('restart', function () {
       logger.info('>> node restart');
     });
