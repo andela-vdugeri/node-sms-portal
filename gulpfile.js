@@ -34,7 +34,7 @@ var paths = {
 gulp.task('jade', function () {
   gulp.src(paths.jade)
     .pipe(jade())
-    .pipe(gulp.dest('./poblic/'));
+    .pipe(gulp.dest('./public/'));
 });
 
 gulp.task('less', function () {
