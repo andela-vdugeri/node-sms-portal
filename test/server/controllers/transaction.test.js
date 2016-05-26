@@ -1,6 +1,6 @@
 'use strict';
 
-var transactionController = require('../../../server/controllers/transaction.controller'),
+var transactionController = require('../../../server/controllers/transaction'),
   models = require('../../../server/models'),
   httpMocks = require('node-mocks-http'),
   should = require('should'),
@@ -51,13 +51,13 @@ describe('Transaction controller', function () {
 
   describe('#index', function () {
     beforeEach(function (done) {
-      models.Transaction.create(mockTransaction).then(function (trans) {
+      models.Transaction.create(mockTransaction).then(function () {
         done();
       });
     });
 
     describe('No Errors', function () {
-      it ('should fetch all transaction records', function (done) {
+      it('should fetch all transaction records', function (done) {
         var req = httpMocks.createRequest();
         transactionController.index(req, res);
 
@@ -66,8 +66,8 @@ describe('Transaction controller', function () {
           should.exist(data);
           data.length.should.equal(1);
           done();
-        })
-      })
+        });
+      });
     });
 
     describe('Errors', function () {
@@ -153,6 +153,86 @@ describe('Transaction controller', function () {
     });
   });
 
+  describe('#show', function () {
+    var id;
+    beforeEach(function (done) {
+      models.Transaction.create(mockTransaction).then(function (trans) {
+        id = trans.id;
+        done();
+      });
+    });
+
+    afterEach(function (done) {
+      models.Transaction.destroy({ where: {} }).then(function () {
+        done();
+      });
+    });
+
+    describe('No Errors', function () {
+      it('should find a Transaction from the  database', function (done) {
+        var req = httpMocks.createRequest({
+          params: {
+            id: id
+          }
+        });
+        transactionController.show(req, res);
+        res.on('end', function () {
+          var data = JSON.parse(res._getData());
+          data.messageUnits.should.equal(mockTransaction.messageUnits);
+          data.receivers.should.be.instanceOf(Array);
+          done();
+        });
+      });
+      it('should return 404 for inexistent record', function (done) {
+        var req = httpMocks.createRequest({
+          params: {
+            id: 2323232
+          }
+        });
+        transactionController.show(req, res);
+        res.on('end', function () {
+          var data = JSON.parse(res._getData());
+          res.statusCode.should.equal(404);
+          data.message.should.equal('Transaction record not found');
+          done();
+        });
+      });
+    });
+
+    describe('Errors', function () {
+      var promise = models.Transaction.findById;
+
+      beforeEach(function (done) {
+        var deferred = Q.defer();
+        models.Transaction.findById = function () {
+          return deferred.promise;
+        };
+        deferred.reject(error);
+        done();
+      });
+
+      afterEach(function (done) {
+        models.Transaction.findById = promise;
+        done();
+      });
+
+      it('should return status code 500', function (done) {
+        var req = httpMocks.createRequest({
+          params: {
+            id: id
+          }
+        });
+        transactionController.show(req, res);
+        res.on('end', function () {
+          var data = JSON.parse(res._getData());
+          // res.statusCode.should.eqaual(500);
+          data.message.should.equal(error.message);
+          done();
+        });
+      });
+    });
+  });
+
   describe('#edit', function () {
     var id, updatedTransaction;
 
@@ -213,27 +293,60 @@ describe('Transaction controller', function () {
     });
 
     describe('Errors', function () {
-      var promise = models.Transaction.findById;
-      before(function () {
-        var deferred = Q.defer();
-        models.Transaction.findById = function () {
-          return deferred.promise;
-        }
-        deferred.reject(error);
-      });
+      describe('Find by id fails', function () {
+        var promise = models.Transaction.findById;
+        before(function () {
+          var deferred = Q.defer();
+          models.Transaction.findById = function () {
+            return deferred.promise;
+          }
+          deferred.reject(error);
+        });
 
-      after(function () {
-        models.Transaction.findById = promise;
-      });
+        after(function () {
+          models.Transaction.findById = promise;
+        });
 
-      it('should return status code 500', function (done) {
-        var req = httpMocks.createRequest();
-        transactionController.edit(req, res);
-        res.on('end', function () {
-          var data = JSON.parse(res._getData());
-          res.statusCode.should.equal(500);
-          data.message.should.equal(error.message);
+        it('should return status code 500', function (done) {
+          var req = httpMocks.createRequest();
+          transactionController.edit(req, res);
+          res.on('end', function () {
+            var data = JSON.parse(res._getData());
+            res.statusCode.should.equal(500);
+            data.message.should.equal(error.message);
+            done();
+          });
+        });
+      })
+
+      describe('Update fails', function () {
+        var promise = models.Transaction.Instance.prototype.save;
+        beforeEach(function (done) {
+          var deferred = Q.defer();
+          models.Transaction.Instance.prototype.save = function () {
+            return deferred.promise;
+          }
+          deferred.reject(error);
           done();
+        });
+
+        afterEach(function (done) {
+          models.Transaction.Instance.prototype.save = promise;
+          done();
+        });
+        it('should return 500 status code', function (done) {
+          var req = httpMocks.createRequest({
+            params: {
+              id: id
+            }
+          });
+          transactionController.edit(req, res);
+          res.on('end', function () {
+            var data = JSON.parse(res._getData());
+            res.statusCode.should.equal(500);
+            data.message.should.equal(error.message);
+            done();
+          });
         });
       });
     });
@@ -289,27 +402,58 @@ describe('Transaction controller', function () {
     });
 
     describe('Errors', function (done) {
-      var promise = models.Transaction.findById;
-      before(function () {
-        var deferred = Q.defer();
-        models.Transaction.findById = function () {
-          return deferred.promise;
-        };
-        deferred.reject(error);
-      });
+      describe('Find by id fails', function () {
+        var promise = models.Transaction.findById;
+        before(function () {
+          var deferred = Q.defer();
+          models.Transaction.findById = function () {
+            return deferred.promise;
+          };
+          deferred.reject(error);
+        });
 
-      after(function () {
-        models.Transaction.findById = promise;
-      });
+        after(function () {
+          models.Transaction.findById = promise;
+        });
 
-      it('should return status code 500', function (done) {
-        var req = httpMocks.createRequest();
-        transactionController.delete(req, res);
-        res.on('end', function () {
-          var data = JSON.parse(res._getData());
-          res.statusCode.should.equal(500);
-          data.message.should.equal(error.message);
-          done();
+        it('should return status code 500', function (done) {
+          var req = httpMocks.createRequest();
+          transactionController.delete(req, res);
+          res.on('end', function () {
+            var data = JSON.parse(res._getData());
+            res.statusCode.should.equal(500);
+            data.message.should.equal(error.message);
+            done();
+          });
+        });
+      });
+      describe('Delete fails', function () {
+        var promise = models.Transaction.Instance.prototype.destroy;
+        before(function () {
+          var deferred = Q.defer();
+          models.Transaction.Instance.prototype.destroy = function () {
+            return deferred.promise;
+          };
+          deferred.reject(error);
+        });
+
+        after(function () {
+          models.Transaction.Instance.prototype.destroy = promise;
+        });
+
+        it('should return a  500 status code', function (done) {
+          var req = httpMocks.createRequest({
+            params: {
+              id: id
+            }
+          });
+          transactionController.delete(req, res);
+          res.on('end', function () {
+            var data = JSON.parse(res._getData());
+            //data.message.statusCode.should.equal(500);
+            data.message.should.equal(error.message);
+            done();
+          });
         });
       });
     });

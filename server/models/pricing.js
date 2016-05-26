@@ -2,8 +2,8 @@
 
 module.exports = function (sequelize, DataTypes) {
   var Pricing = sequelize.define('Pricing', {
-    id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true, unique: true},
-    unitPrice: { type: DataTypes.DECIMAL}
+    id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true, unique: true },
+    unitPrice: { type: DataTypes.DECIMAL }
   }, {
     underscored: true,
     instanceMethods: {
