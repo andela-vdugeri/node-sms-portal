@@ -1,0 +1,50 @@
+doctype html
+html(lang="en" ng-app="Sms")
+  head
+    title Latter Africa
+    include shared/head
+  body(layout="row" layout-fill)
+    md-content.md-default-theme.no-bg(layout="column" layout-fill)
+      div(ng-controller="MenuCtrl")
+        md-toolbar(ng-if='currentUser').nav-toolbar
+          .md-toolbar-tools(layout="row" layout-align="space-between center")
+            div(layout="row" layout-align="space-between center")
+              .logo(layout="row" layout-align="center center") 
+                a(ui-sref='home')
+                  img(src="img/latter_africa.png")
+              md-divider.vertical-divider
+              md-button.md-icon-button(aria-label="Open Sidenav" ng-click="openSideNav($event)")
+                md-icon.material-icons.md-light.md-18 menu
+              md-divider.vertical-divider
+            div(layout="row" layout-align="space-between center" layout-padding)
+              span(hide-xs).md-subhead.user-name Hello, {{currentUser.name}}!
+              div
+                md-menu
+                  .user-avatar(ng-mouseenter='$mdOpenMenu($event)')
+                    img(ng-src="{{currentUser.picture}}" alt="{{currentUser.name}}'s avatar")
+                  md-menu-content(width='3')
+                    md-menu-item(logout)
+                      md-button(ng-click='logout()')
+                        md-icon.material-icons.md-light.md-48(md-menu-align-target) power_settings_new
+                        span Logout
+        
+        md-sidenav.md-whiteframe-z2(ng-class="{'md-sidenav-left-lg': expandSideNav, 'md-sidenav-left': !expandSideNav}" md-component-id="left" md-is-locked-open="true" ng-if='currentUser')
+          md-list
+            md-list-item(ng-click="goToHome()" ng-class="{'active': isActive('home')}")
+              md-icon.material-icons.md-light.md-48 home
+              p Home
+              md-divider
+            md-list-item(ng-click="goToSkills()" ng-class="{'active': isActive('skills')}")
+              md-icon.material-icons.md-light.md-48 assignment
+              p Skills
+              md-divider
+            md-list-item(ng-click="goToReports()" ng-hide="currentUser.isFellow || currentUser.isGuest" ng-class="{'active': isActive('admin/reports')}")
+              md-icon.material-icons.md-light.md-48 trending_up
+              p Reports
+              md-divider
+            md-list-item(ng-click="goToActivities()" ng-hide="currentUser.isFellow || currentUser.isGuest" ng-class="{'active': isActive('admin/activities')}")
+              md-icon.material-icons.md-light.md-48 history
+              p Audit Log
+              md-divider
+
+      md-content.md-default-theme.main-view(layout="column" flex ui-view)
