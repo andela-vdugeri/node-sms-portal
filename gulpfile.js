@@ -21,50 +21,9 @@ var gulp = require('gulp'),
 
 var paths = {
   public: 'public/**',
-  jade: 'app/**/*.jade',
-  styles: 'app/styles/*.+(less|css)',
   scripts: 'app/**/*.js',
-  staticFiles: [
-    '!app/**/*.+(less|css|js|jade)',
-    'app/**/*.*'
-  ],
   serverTest: './test/server/**/*.js'
 };
-
-gulp.task('jade', function () {
-  gulp.src(paths.jade)
-    .pipe(jade())
-    .pipe(gulp.dest('./public/'));
-});
-
-gulp.task('less', function () {
-  gulp.src(paths.styles)
-    .pipe(less({
-      paths: [path.join(__dirname, 'styles')]
-    }))
-    .pipe(gulp.dest('./public/css'));
-});
-
-gulp.task('static-files', function () {
-  return gulp.src(paths.staticFiles)
-    .pipe(gulp.dest('public/'));
-});
-
-gulp.task('scripts', function () {
-  gulp.src(paths.scripts)
-    .pipe(concat('index.js'))
-    .pipe(gulp.dest('./public/js'));
-});
-
-gulp.task('browserify', function () {
-  var b = browserify();
-  b.add('./app/application.js');
-  return b.bundle()
-  .on('success', gutil.log.bind(gutil, 'Browserify Rebundled'))
-  .on('error', gutil.log.bind(gutil, 'Browserify Error: in browserify gulp task'))
-  .pipe(source('index.js'))
-  .pipe(gulp.dest('./public/js'));
-});
 
 gulp.task('coverage-setup', function () {
   return gulp.src('./server/**/*.js')
@@ -89,18 +48,6 @@ gulp.task('server:test', ['db:sync', 'coverage-setup'], function () {
     }));
 });
 
-gulp.task('minify-js', ['browserify'], function () {
-  return gulp.src('./public/js/*.js')
-    .pipe(uglify())
-    .pipe(gulp.dest('./public/js'));
-});
-
-gulp.task('watch', function () {
-  gulp.watch(paths.jade, ['jade']);
-  gulp.watch(paths.styles, ['less']);
-  gulp.watch(paths.scripts, ['browserify']);
-});
-
 gulp.task('bower', function () {
   return bower()
     .pipe(gulp.dest('public/lib/'));
@@ -113,9 +60,9 @@ gulp.task('nodemon', function () {
     });
 });
 
-gulp.task('default', ['nodemon', 'browserify', 'build', 'watch']);
+gulp.task('default', ['nodemon']);
 gulp.task('test', ['server:test']);
-gulp.task('build', ['db:migrate', 'bower', 'jade', 'less', 'static-files']);
+gulp.task('build', ['db:migrate', 'bower']);
 
-gulp.task('heroku:staging', ['build', 'browserify']);
-gulp.task('heroku:production', ['build', 'minify-js']);
+gulp.task('heroku:staging', ['build']);
+gulp.task('heroku:production', ['build']);
