@@ -1,0 +1,22 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": null,
+    "database": "sms_portal",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "postgres",
+    "password": null,
+    "database": "sms_portal_test",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "production": {
+    "use_env_variable": "DATABASE_URL"
+  },
+  "staging": {
+     "use_env_variable": "DATABASE_URL"
+   }
+}
