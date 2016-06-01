@@ -17,6 +17,9 @@ var gulp = require('gulp'),
   source = require('vinyl-source-stream'),
   bower = require('gulp-bower'),
   uglify = require('gulp-uglify'),
+  webpack = require('webpack'),
+  webpackDevServer = require('webpack-dev-server'),
+  webpackConfig = require('./webpack.config'),
   istanbul = require('gulp-istanbul');
 
 var paths = {
@@ -60,7 +63,23 @@ gulp.task('nodemon', function () {
     });
 });
 
-gulp.task('default', ['nodemon']);
+gulp.task('webpack:dev-server', function (cb) {
+  var compiler = webpack(webpackConfig);
+
+  new webpackDevServer(compiler, {
+    publicPath: '/' + webpackConfig.output.publicPath,
+    stats: {
+      colors: true
+    }
+  }).listen(8080, 'localhost', function (err) {
+    if (err) {
+      throw new gutil.pluginError('webpack-dev-server', err);
+      gutil.log('[webpack-dev-server]', 'http://localhost:8080');
+    }
+  });
+});
+
+gulp.task('default', ['nodemon', 'webpack:dev-server']);
 gulp.task('test', ['server:test']);
 gulp.task('build', ['db:migrate', 'bower']);
 

@@ -10,6 +10,7 @@ var cookieParser = require('cookie-parser'),
   env = process.env.NODE_ENV || 'development',
   config = require('./server/config/config')[env],
   t = require('moment'),
+  cors = require('cors'),
   logger = require('winston');
 
 
@@ -20,7 +21,7 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
-
+app.use(cors());
 app.use(function (req, res, next) {
   if (env === 'development') {
     logger.info(t().format('HH:MM'), req.method, req.url, req.socket.bytesRead);

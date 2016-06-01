@@ -1,0 +1,31 @@
+{
+  "name": "node-sms-portal",
+  "description": "sms portal with nodejs",
+  "main": "server.js",
+  "authors": [
+    "Verem Dugeri"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "sms",
+    "portal",
+    "bulk",
+    "sms",
+    "scheduled",
+    "sms",
+    "organisational",
+    "sms"
+  ],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/lib",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.6"
+  }
+}
